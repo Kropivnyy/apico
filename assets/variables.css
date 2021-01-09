@@ -1,0 +1,18 @@
+:root {
+  --white: #fff;
+  --star-white: #f2f2f2;
+  --primary-green: #349a89;
+  --dark-grey-100: #101010;
+  --dark-grey-200: #2b2b2b;
+  --dark-grey-300: #303030;
+  --dark-grey-400: #373738;
+  --dark-grey-500: #505050;
+  --grey-700: #8c8c8c;
+  --grey-800: #c0c4ce;
+  --grey-900: #f9fafb;
+  --grey-half-opacity: rgba(102, 102, 102, 0.466455);
+  --grey-high-opacity: rgba(123, 123, 123, 0.776523);
+  --error: #f00;
+  --indigo: #3e3961;
+  --main-transition: 0.25s ease-in-out;
+}
