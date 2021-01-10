@@ -1,7 +1,7 @@
 <template>
-  <header class="header">
-    <div class="container header-inner">
-      <Logo />
+  <header class="header" :class="{ dark: !isAuthLayout }">
+    <div class="header-inner">
+      <Logo :dark="isAuthLayout" />
       <nav class="navigation">
         <NavigationTextBtn
           v-for="btn in navButtons"
@@ -27,10 +27,18 @@ export default {
   },
   data() {
     return {
+      isVisibleModal: false,
       navButtons: [
         {
           text: 'Sell',
           action: () => this.$router.push(HOME),
+          dark: false,
+          accent: true,
+        },
+        {
+          text: '+ Add',
+          action: () =>
+            this.$store.commit('products-store/toggleAddProductModal'),
           dark: false,
           accent: true,
         },
@@ -48,6 +56,14 @@ export default {
 
 <style scoped>
 .header {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  background-color: transparent;
+}
+
+.dark {
   background: linear-gradient(180deg, #090810 0%, #171236 100%);
 }
 

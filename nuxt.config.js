@@ -19,11 +19,32 @@ export default {
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
   },
   loading: { color: '#349A89' },
-  css: ['~/assets/variables.css', '~/assets/base.css'],
-  plugins: [],
+  css: ['~/assets/styles/styles.scss'],
+  plugins: ['~/plugins/portal-plugin'],
   components: true,
   buildModules: ['@nuxtjs/eslint-module', '@nuxtjs/stylelint-module'],
-  modules: ['@nuxtjs/axios'],
+  modules: [
+    '@nuxtjs/axios',
+    [
+      '@nuxtjs/firebase',
+      {
+        config: {
+          apiKey: 'AIzaSyCOBV61EKZhLjzWIiWanUP-nCCrxvfCxTU',
+          authDomain: 'apico-vue.firebaseapp.com',
+          projectId: 'apico-vue',
+          storageBucket: 'apico-vue.appspot.com',
+          messagingSenderId: '839853563421',
+          appId: '1:839853563421:web:4ae5bff9f69f2fc92230f4',
+          measurementId: 'G-4YDS2P6VQN',
+          databaseURL: 'https://apico-vue-default-rtdb.firebaseio.com/',
+        },
+        services: {
+          auth: true,
+          database: true,
+        },
+      },
+    ],
+  ],
   axios: {},
   router: {
     prefetchLinks: false,

@@ -47,7 +47,6 @@ export default {
   color: var(--white);
   text-transform: uppercase;
   user-select: none;
-  white-space: nowrap;
   cursor: pointer;
 }
 
