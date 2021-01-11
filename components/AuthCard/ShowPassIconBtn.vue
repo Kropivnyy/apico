@@ -18,7 +18,7 @@ export default {
     },
   },
   data: () => ({
-    iconSrc: require('~/assets/eye-icon.svg'),
+    iconSrc: require('~/assets/icons/eye-icon.svg'),
   }),
 }
 </script>

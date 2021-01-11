@@ -45,6 +45,7 @@ export default {
 }
 
 .plus {
+  margin-bottom: 8px;
   color: var(--primary-green);
   font-size: 65px;
 }
