@@ -40,6 +40,7 @@ export default {
 }
 
 .image {
+  max-height: 100%;
   object-fit: cover;
   border-radius: inherit;
 }

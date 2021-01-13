@@ -27,7 +27,7 @@
                 <small
                   class="input-error-text"
                   :class="{ visible: isInvalidTitle }"
-                  >Enter your actual email</small
+                  >Enter actual name of product</small
                 >
               </label>
             </div>
@@ -127,6 +127,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import { validationMixin } from 'vuelidate'
 import { required, minLength, numeric } from 'vuelidate/lib/validators'
 
@@ -176,7 +177,11 @@ export default {
     window.removeEventListener('keydown', this.keyDownHandler)
   },
   methods: {
+    ...mapActions({
+      addProduct: 'products-store/addProduct',
+    }),
     toggleModal() {
+      this.resetForm()
       this.$store.commit('products-store/toggleAddProductModal')
     },
     keyDownHandler({ code }) {
@@ -185,17 +190,43 @@ export default {
       }
     },
     onSelectFiles({ target }) {
-      this.selectedFile = target.files[0]
+      if (target) {
+        this.selectedFile = target.files[0]
+      }
     },
     onRemoveFile() {
       this.selectedFile = null
     },
 
-    onSubmit() {
+    resetForm() {
+      this.title = ''
+      this.location = ''
+      this.description = ''
+      this.selectedFile = null
+      this.price = 1
+      this.$refs.fileInput.value = null
+      this.$v.$reset()
+    },
+
+    async onSubmit() {
+      if (this.submitLoading) return
       if (this?.$v?.$invalid) {
         this.$v.$touch()
+        return
       }
-      // this.$refs.fileInput.value = null;
+      try {
+        this.submitLoading = true
+        const product = {
+          title: this.title,
+          location: this.location,
+          description: this.description,
+          photo: this.selectedFile,
+          price: this.price,
+        }
+        await this.addProduct(product)
+        this.toggleModal()
+      } catch (error) {}
+      this.submitLoading = false
     },
   },
 }
