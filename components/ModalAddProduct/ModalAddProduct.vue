@@ -119,7 +119,9 @@
               {{ submitLoading ? 'Loading...' : 'Submit' }}
             </button>
           </form>
-          <button class="close-btn" @click="toggleModal">+</button>
+          <button class="close-btn" @click="toggleModal">
+            <span class="close-btn-content">+</span>
+          </button>
         </div>
       </div>
     </div>
@@ -139,7 +141,7 @@ export default {
     location: '',
     description: '',
     selectedFile: null,
-    price: 1,
+    price: '',
     submitLoading: false,
   }),
   validations: {
@@ -239,7 +241,7 @@ export default {
   left: 0;
   width: 100%;
   min-height: 100vh;
-  padding-top: 77px;
+  padding-top: var(--header-height);
   display: flex;
   justify-content: center;
   align-items: flex-start;
@@ -284,6 +286,11 @@ export default {
   color: var(--black);
   font-size: 36px;
   transform: rotate(45deg);
+}
+
+.close-btn-content {
+  display: block;
+  margin-top: 2px;
 }
 
 @media screen and (min-width: 768px) {

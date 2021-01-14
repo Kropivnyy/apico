@@ -1,6 +1,6 @@
 <template>
   <header class="header" :class="{ dark: !isAuthLayout }">
-    <div class="header-inner">
+    <div class="header-inner" :class="{ 'visible-search': isVisibleSearch }">
       <Logo :dark="isAuthLayout" />
       <nav class="navigation">
         <NavigationTextBtn
@@ -9,6 +9,7 @@
           v-bind="btn"
         />
       </nav>
+      <SearchFields v-if="isVisibleSearch" />
     </div>
   </header>
 </template>
@@ -20,6 +21,11 @@ export default {
   name: 'Header',
   props: {
     isAuthLayout: {
+      type: Boolean,
+      default: false,
+      required: false,
+    },
+    isVisibleSearch: {
       type: Boolean,
       default: false,
       required: false,
@@ -68,7 +74,7 @@ export default {
 }
 
 .header-inner {
-  min-height: 77px;
+  min-height: var(--header-height);
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
@@ -76,6 +82,11 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.visible-search {
+  min-height: var(--header-extra-height);
 }
 
 .navigation {

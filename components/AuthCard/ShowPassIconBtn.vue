@@ -26,16 +26,9 @@ export default {
 <style scoped>
 .button {
   align-self: center;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
   height: 30px;
   width: 30px;
-  padding: 0;
-  outline: 0;
-  border: none;
+  border-radius: 50%;
   background-color: transparent;
-  user-select: none;
-  cursor: pointer;
 }
 </style>

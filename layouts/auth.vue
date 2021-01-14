@@ -2,9 +2,9 @@
   <div class="app">
     <Header is-auth-layout />
     <main class="auth-content">
-      <div class="form-card">
+      <section class="form-card">
         <Nuxt />
-      </div>
+      </section>
       <AuthSubcard class="form-card" />
     </main>
     <Footer />
