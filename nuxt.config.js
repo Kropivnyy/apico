@@ -20,7 +20,7 @@ export default {
   },
   loading: { color: '#349A89' },
   css: ['~/assets/styles/styles.scss'],
-  plugins: ['~/plugins/portal-plugin'],
+  plugins: ['~/plugins/portal-plugin', '~/plugins/click-outside-directive'],
   components: true,
   buildModules: ['@nuxtjs/eslint-module', '@nuxtjs/stylelint-module'],
   modules: [

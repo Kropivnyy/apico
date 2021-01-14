@@ -61,6 +61,7 @@ import { HOME } from '~/utils/constants/routes'
 
 export default {
   layout: 'auth',
+  middleware: ['restricted-route-middleware'],
   mixins: [validationMixin],
   data: () => ({
     email: '',

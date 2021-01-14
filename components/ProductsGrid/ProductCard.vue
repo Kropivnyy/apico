@@ -75,6 +75,7 @@ export default {
   border-radius: 4px 4px 0 0;
   object-fit: cover;
   transition: transform var(--main-transition);
+  user-select: none;
 }
 
 .fallback {

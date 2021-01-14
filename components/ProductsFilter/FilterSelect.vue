@@ -3,9 +3,11 @@
     class="filter-select-container"
     @click="isVisibleDropdown = !isVisibleDropdown"
   >
-    <div class="chosen-category">
+    <div ref="chosenCategory" class="chosen-category">
       <img class="prepend-input-icon" :src="gridIconSrc" />
-      <span>{{ selectedCategory.text }}</span>
+      <span>{{
+        selectedCategory.value ? selectedCategory.text : 'Choose category'
+      }}</span>
       <div class="spacer"></div>
       <img
         class="append-input-icon"
@@ -13,11 +15,19 @@
         :src="chevronDownIconSrc"
       />
     </div>
-    <ul v-if="isVisibleDropdown" class="categories-list">
+    <ul
+      v-if="isVisibleDropdown"
+      v-click-outside="{
+        exclude: ['chosenCategory'],
+        handler: 'onClickOutsideDropdown',
+      }"
+      class="categories-list"
+    >
       <li
         v-for="category in categories"
         :key="category.value"
         class="category-item"
+        :class="{ active: category.value === selectedCategory.value }"
         @click.stop="() => onClickCategory(category)"
       >
         {{ category.text }}
@@ -38,12 +48,25 @@ export default {
       type: Object,
       required: true,
     },
+    changeCategory: {
+      type: Function,
+      required: true,
+    },
   },
   data: () => ({
     gridIconSrc: require('~/assets/icons/grid-icon.svg'),
     chevronDownIconSrc: require('~/assets/icons/chevron-down-icon.svg'),
     isVisibleDropdown: false,
   }),
+  methods: {
+    onClickCategory(category) {
+      this.changeCategory(category)
+      this.isVisibleDropdown = false
+    },
+    onClickOutsideDropdown() {
+      this.isVisibleDropdown = false
+    },
+  },
 }
 </script>
 
@@ -53,12 +76,12 @@ export default {
   display: flex;
   align-items: center;
   flex-grow: 1;
+  cursor: pointer;
 }
 
 .chosen-category {
   display: flex;
   align-items: center;
-  cursor: pointer;
   flex-grow: 1;
 }
 
@@ -85,6 +108,10 @@ export default {
   background-color: var(--grey-1000);
   transition: background-color var(--main-transition);
   cursor: pointer;
+}
+
+.category-item.active {
+  background-color: var(--grey-900);
 }
 
 .category-item:first-child {

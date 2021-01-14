@@ -4,6 +4,7 @@
       <FilterSelect
         :categories="categories"
         :selected-category="selectedCategory"
+        :change-category="changeCategory"
       />
     </FilterContainer>
     <FilterContainer class="filter-container filter-price-from price">
@@ -28,35 +29,17 @@
 </template>
 
 <script>
-import { WITHOUT_PHOTO, WITH_PHOTO } from '~/utils/constants/categories'
+import categories from '~/utils/constants/categories'
 export default {
   name: 'ProductsFilter',
-  data: () => ({
-    selectedCategory: {
-      value: '',
-      text: 'Choose Category',
-      filterCondition: () => true,
-    },
-    categories: [
-      {
-        value: '',
-        text: 'Choose Category',
-        filterCondition: () => true,
-      },
-      {
-        value: WITH_PHOTO,
-        text: 'With photo',
-        filterCondition: (product) => product.photo,
-      },
-      {
-        value: WITHOUT_PHOTO,
-        text: 'Without photo',
-        filterCondition: (product) => !product.photo,
-      },
-    ],
-    priceFrom: '',
-    priceTo: '',
-  }),
+  data() {
+    return {
+      categories,
+      selectedCategory: categories[0],
+      priceFrom: '',
+      priceTo: '',
+    }
+  },
   updated() {
     const filterFunction = (product) =>
       (this.priceFrom
@@ -67,6 +50,11 @@ export default {
         : true) &&
       this.selectedCategory.filterCondition(product)
     this.$emit('changeFilterFunction', filterFunction)
+  },
+  methods: {
+    changeCategory(category) {
+      this.selectedCategory = category
+    },
   },
 }
 </script>
