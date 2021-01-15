@@ -1,8 +1,14 @@
 <template>
-  <button class="button"><img class="icon" :src="heartIconSrc" /></button>
+  <button class="button" @click="onClick">
+    <img
+      class="icon"
+      :src="isProductInFavorites ? heartFilledIconSrc : heartIconSrc"
+    />
+  </button>
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
 export default {
   name: 'ProductCardFavoriteBtn',
   props: {
@@ -13,7 +19,26 @@ export default {
   },
   data: () => ({
     heartIconSrc: require('~/assets/icons/heart-icon.svg'),
+    heartFilledIconSrc: require('~/assets/icons/heart-filled-icon.svg'),
   }),
+  computed: {
+    ...mapGetters({
+      favorites: 'user-store/favorites',
+    }),
+    isProductInFavorites() {
+      return this.favorites.has(this.productId)
+    },
+  },
+  methods: {
+    ...mapActions({
+      updateUserFavorites: 'user-store/updateUserFavorites',
+    }),
+    async onClick() {
+      try {
+        await this.updateUserFavorites(this.productId)
+      } catch (error) {}
+    },
+  },
 }
 </script>
 

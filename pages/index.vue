@@ -10,6 +10,13 @@
 import { mapGetters } from 'vuex'
 
 export default {
+  async fetch({ store }) {
+    if (!store.getters['products-store/isProductsFetched']) {
+      try {
+        await store.dispatch('products-store/fetchProducts')
+      } catch (error) {}
+    }
+  },
   data: () => ({
     filterFunction: () => true,
   }),

@@ -12,11 +12,16 @@
 </template>
 
 <script>
+import { HOME } from '~/utils/constants/routes'
 export default {
-  async mounted() {
-    if (!Object.keys(this.$store.getters['auth-store/user']).length) {
-      await this.$store.dispatch('auth-store/fetchUser')
-    }
+  async fetch({ store, redirect }) {
+    console.log('fetch auth layout')
+    try {
+      await store.dispatch('user-store/fetchUser')
+      if (Object.keys(store.getters['user-store/user']).length) {
+        redirect(HOME)
+      }
+    } catch (error) {}
   },
 }
 </script>

@@ -2,8 +2,7 @@
   <div class="app">
     <Header is-visible-search />
     <main class="main-content">
-      <Nuxt v-if="!isFetchProductsLoading" />
-      <h3 v-if="isFetchProductsLoading">Loading...</h3>
+      <Nuxt />
       <ModalAddProduct v-if="isVisibleAddProductModal" />
     </main>
     <Footer />
@@ -15,29 +14,32 @@
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
-  data: () => ({
-    isFetchProductsLoading: true,
-  }),
+  fetch({ store, redirect }) {
+    console.log('fetch default layout')
+    // try {
+    //   await store.dispatch('user-store/fetchUser')
+    //   if (!Object.keys(store.getters['user-store/user']).length) {
+    //     redirect(HOME)
+    //   }
+    // } catch (error) {}
+  },
   computed: {
     ...mapGetters({
-      user: 'auth-store/user',
+      user: 'user-store/user',
       isVisibleAddProductModal: 'products-store/isVisibleAddProductModal',
     }),
   },
 
   async mounted() {
     if (!Object.keys(this.user).length) {
-      await this.fetchUser()
+      try {
+        await this.fetchUser()
+      } catch (error) {}
     }
-    try {
-      await this.fetchProducts()
-    } catch (error) {}
-    this.isFetchProductsLoading = false
   },
   methods: {
     ...mapActions({
-      fetchUser: 'auth-store/fetchUser',
-      fetchProducts: 'products-store/fetchProducts',
+      fetchUser: 'user-store/fetchUser',
     }),
   },
 }

@@ -1,6 +1,7 @@
 export const state = () => ({
   isVisibleAddProductModal: false,
   products: [],
+  isProductsFetched: false,
 })
 
 export const mutations = {
@@ -10,6 +11,10 @@ export const mutations = {
 
   setProducts(state, products) {
     state.products = products
+  },
+
+  setIsProductsFetched(state, value) {
+    state.isProductsFetched = value
   },
 
   addProduct(state, product) {
@@ -57,6 +62,7 @@ export const actions = {
           productId: key,
         }))
       )
+      commit('setIsProductsFetched', true)
     } catch (error) {
       console.error(error)
       throw error
@@ -67,4 +73,5 @@ export const actions = {
 export const getters = {
   isVisibleAddProductModal: (state) => state.isVisibleAddProductModal,
   products: (state) => state.products,
+  isProductsFetched: (state) => state.isProductsFetched,
 }

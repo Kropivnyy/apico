@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { HOME, LOGIN } from '~/utils/constants/routes'
+import { FAVORITES, HOME, LOGIN } from '~/utils/constants/routes'
 
 export default {
   name: 'Header',
@@ -51,6 +51,18 @@ export default {
         {
           text: 'Login',
           action: () => this.$router.push(LOGIN),
+          dark: false,
+          accent: false,
+        },
+        {
+          text: 'Favorites',
+          action: () => this.$router.push(FAVORITES),
+          dark: false,
+          accent: false,
+        },
+        {
+          text: 'Logout',
+          action: () => this.$store.dispatch('auth-store/logout'),
           dark: false,
           accent: false,
         },
