@@ -61,6 +61,7 @@ import { HOME } from '~/utils/constants/routes'
 
 export default {
   layout: 'auth',
+  transition: 'main-fade',
   middleware: ['fetch-user-middleware', 'restricted-route-middleware'],
   mixins: [validationMixin],
   data: () => ({
@@ -126,7 +127,7 @@ export default {
   margin-bottom: 16px;
   font-size: 14px;
   letter-spacing: 0.4px;
-  color: var(--grey-600);
+  color: var(--grey-500);
 }
 
 .forgot-password {

@@ -15,18 +15,13 @@
       </template>
     </SearchInputContainer>
     <SearchInputContainer class="location-search-container">
-      <template v-slot:icon>
-        <SearchInputIcon :src="locationIconSrc" />
-      </template>
-      <template v-slot:input>
-        <input
-          v-model.trim="location"
-          class="input"
-          type="text"
-          placeholder="Location"
-          autocomplete="off"
-        />
-      </template>
+      <FilterSelect
+        :options="availableLocations"
+        :selected-option="location"
+        :change-option="changeLocation"
+        :prepend-icon-src="locationIconSrc"
+        default-text="Location"
+      />
     </SearchInputContainer>
     <button class="search-btn" type="submit">Search</button>
   </form>
@@ -34,11 +29,13 @@
 
 <script>
 import { mapGetters, mapMutations } from 'vuex'
+import defaultLocation from '~/utils/constants/locations'
+
 export default {
   name: 'SearchFields',
   data: () => ({
     product: '',
-    location: '',
+    location: defaultLocation,
     searchIconSrc: require('~/assets/icons/search-icon.svg'),
     locationIconSrc: require('~/assets/icons/location-icon.svg'),
   }),
@@ -46,12 +43,22 @@ export default {
     ...mapGetters({
       products: 'products-store/products',
     }),
+    availableLocations() {
+      const products = this.$store.state['products-store'].products
+      return [
+        defaultLocation,
+        ...products.map((product) => ({
+          value: product.location,
+          text: product.location,
+        })),
+      ]
+    },
   },
   watch: {
     product(value) {
-      if (!value && !this.location) this.onSearch()
+      if (!value && !this.location.value) this.onSearch()
     },
-    location(value) {
+    'location.value'(value) {
       if (!value && !this.product) this.onSearch()
     },
   },
@@ -60,6 +67,9 @@ export default {
       setSearchInput: 'products-store/setSearchInput',
       setSearchingLocation: 'products-store/setSearchingLocation',
     }),
+    changeLocation(location) {
+      this.location = location
+    },
     onSearch() {
       this.setSearchInput(this.product)
       this.setSearchingLocation(this.location)

@@ -10,6 +10,7 @@
 import { mapGetters } from 'vuex'
 
 export default {
+  transition: 'main-fade',
   middleware: ['fetch-user-middleware'],
   async fetch({ store, dispatch }) {
     if (!store.getters['products-store/productsFetched']) {

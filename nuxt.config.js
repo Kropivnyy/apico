@@ -18,7 +18,7 @@ export default {
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
   },
-  loading: { color: '#349A89' },
+  loading: { color: '#349A89', continuous: true },
   css: ['~/assets/styles/styles.scss'],
   plugins: ['~/plugins/portal-plugin', '~/plugins/click-outside-directive'],
   components: true,
@@ -46,9 +46,7 @@ export default {
       },
     ],
   ],
-  axios: {},
   router: {
     prefetchLinks: false,
   },
-  build: {},
 }

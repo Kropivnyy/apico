@@ -14,8 +14,8 @@
         :alt="product.description || `${product.title} photo`"
       />
     </div>
-    <h3 class="title">{{ product.title }}</h3>
-    <div class="price">&#36;{{ product.price }}</div>
+    <h3 class="title text-overflow-ellipsis">{{ product.title }}</h3>
+    <div class="price text-overflow-ellipsis">&#36;{{ product.price }}</div>
     <ProductCardFavoriteBtn
       v-if="isAuthenticated"
       :product-id="product.productId"

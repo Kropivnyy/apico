@@ -103,6 +103,7 @@ import { HOME } from '~/utils/constants/routes'
 
 export default {
   layout: 'auth',
+  transition: 'main-fade',
   middleware: ['fetch-user-middleware', 'restricted-route-middleware'],
   mixins: [validationMixin],
   data: () => ({

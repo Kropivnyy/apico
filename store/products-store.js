@@ -1,9 +1,11 @@
+import defaultLocation from '~/utils/constants/locations'
+
 export const state = () => ({
   isVisibleAddProductModal: false,
   products: [],
   productsFetched: false,
   searchInput: '',
-  searchingLocation: '',
+  searchingLocation: defaultLocation,
 })
 
 export const mutations = {
@@ -83,7 +85,7 @@ export const actions = {
 export const getters = {
   isVisibleAddProductModal: (state) => state.isVisibleAddProductModal,
   searchInput: (state) => state.searchInput,
-  searchingLocation: (state) => state.searchingLocation,
+  searchingLocation: (state) => state.searchingLocation.value,
   products: (state, getters) => {
     const normalizedSearchValue = getters.searchInput?.toLowerCase()
     const searchingLocation = getters.searchingLocation

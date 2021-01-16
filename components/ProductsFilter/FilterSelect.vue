@@ -3,10 +3,10 @@
     class="filter-select-container"
     @click="isVisibleDropdown = !isVisibleDropdown"
   >
-    <div ref="chosenCategory" class="chosen-category">
+    <div :ref="`chosenOption-${excludeRefId}`" class="chosen-option">
       <img class="prepend-input-icon" :src="prependIconSrc" />
-      <span>{{
-        selectedCategory.value ? selectedCategory.text : 'Choose category'
+      <span class="text-overflow-ellipsis">{{
+        selectedOption.value ? selectedOption.text : defaultText
       }}</span>
       <div class="spacer"></div>
       <img
@@ -18,19 +18,19 @@
     <ul
       v-if="isVisibleDropdown"
       v-click-outside="{
-        exclude: ['chosenCategory'],
+        exclude: [`chosenOption-${excludeRefId}`],
         handler: 'onClickOutsideDropdown',
       }"
       class="options-list"
     >
       <li
-        v-for="category in options"
-        :key="category.value"
-        class="category-item"
-        :class="{ active: category.value === selectedCategory.value }"
-        @click.stop="() => onClickCategory(category)"
+        v-for="option in options"
+        :key="option.value"
+        class="option-item"
+        :class="{ active: option.value === selectedOption.value }"
+        @click.stop="() => onClickOption(option)"
       >
-        {{ category.text }}
+        <span class="text-overflow-ellipsis">{{ option.text }}</span>
       </li>
     </ul>
   </div>
@@ -56,10 +56,15 @@ export default {
       type: String,
       default: '',
     },
+    defaultText: {
+      type: String,
+      default: '',
+    },
   },
   data: () => ({
     chevronDownIconSrc: require('~/assets/icons/chevron-down-icon.svg'),
     isVisibleDropdown: false,
+    excludeRefId: Date.now(),
   }),
   methods: {
     onClickOption(option) {
@@ -79,10 +84,13 @@ export default {
   display: flex;
   align-items: center;
   flex-grow: 1;
+  min-height: inherit;
+  border-radius: inherit;
   cursor: pointer;
 }
 
 .chosen-option {
+  align-self: stretch;
   display: flex;
   align-items: center;
   flex-grow: 1;
@@ -98,23 +106,24 @@ export default {
   top: -1px;
   left: -1px;
   width: calc(100% + 2px);
+  min-height: inherit;
   padding: 0;
   border-radius: 5px;
   list-style: none;
 }
 
 .option-item {
-  min-height: 35px;
+  min-height: inherit;
   display: flex;
   align-items: center;
   padding: 0 10px;
-  background-color: var(--grey-1000);
+  background-color: var(--grey-900);
   transition: background-color var(--main-transition);
   cursor: pointer;
 }
 
 .option-item.active {
-  background-color: var(--grey-900);
+  background-color: var(--grey-800);
 }
 
 .option-item:first-child {
@@ -128,7 +137,7 @@ export default {
 }
 
 .option-item:hover {
-  background-color: var(--grey-800);
+  background-color: var(--grey-700);
 }
 
 .prepend-input-icon {

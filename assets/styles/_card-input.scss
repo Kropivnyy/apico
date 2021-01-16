@@ -112,7 +112,7 @@
     transition: background-color var(--main-transition);
 
     &.disabled {
-      background-color: var(--grey-600);
+      background-color: var(--grey-500);
       cursor: default;
     }
   }

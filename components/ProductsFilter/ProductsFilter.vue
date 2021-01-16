@@ -6,6 +6,7 @@
         :selected-option="selectedCategory"
         :change-option="changeCategory"
         :prepend-icon-src="gridIconSrc"
+        default-text="Choose category"
       />
     </FilterContainer>
     <FilterContainer class="filter-container filter-price-from price">
@@ -33,15 +34,13 @@
 import categories from '~/utils/constants/categories'
 export default {
   name: 'ProductsFilter',
-  data() {
-    return {
-      categories,
-      selectedCategory: categories[0],
-      priceFrom: '',
-      priceTo: '',
-      gridIconSrc: require('~/assets/icons/grid-icon.svg'),
-    }
-  },
+  data: () => ({
+    categories,
+    selectedCategory: categories[0],
+    priceFrom: '',
+    priceTo: '',
+    gridIconSrc: require('~/assets/icons/grid-icon.svg'),
+  }),
   updated() {
     const filterFunction = (product) =>
       (this.priceFrom
@@ -86,6 +85,7 @@ export default {
 
 .price {
   flex: 0 1 143px;
+  max-width: 143px;
 }
 
 .input {

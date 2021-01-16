@@ -1,12 +1,26 @@
 <template>
-  <header class="header" :class="{ dark: !isAuthLayout }">
+  <header class="header" :class="{ 'dark-header': !isAuthLayout }">
     <div class="header-inner" :class="{ 'visible-search': isVisibleSearch }">
       <Logo :dark="isAuthLayout" />
-      <nav class="navigation">
+      <nav v-if="isAuthenticated" class="navigation">
         <NavigationTextBtn
-          v-for="btn in navButtons"
+          v-for="btn in authNav"
           :key="btn.text"
           v-bind="btn"
+        />
+        <NavigationIconBtn
+          v-for="btn in authNavIcons"
+          :key="btn.inactiveIconSrc"
+          v-bind="btn"
+        />
+        <UserMenu />
+      </nav>
+      <nav v-if="!isAuthenticated" class="navigation">
+        <NavigationTextBtn
+          v-for="btn in unauthNav"
+          :key="btn.text"
+          v-bind="btn"
+          :is-auth-layout="isAuthLayout"
         />
       </nav>
       <SearchFields v-if="isVisibleSearch" />
@@ -15,7 +29,8 @@
 </template>
 
 <script>
-import { FAVORITES, HOME, LOGIN } from '~/utils/constants/routes'
+import { mapGetters } from 'vuex'
+import { FAVORITES, HOME, LOGIN, REGISTER } from '~/utils/constants/routes'
 
 export default {
   name: 'Header',
@@ -34,13 +49,27 @@ export default {
   data() {
     return {
       isVisibleModal: false,
-      navButtons: [
+      unauthNav: [
         {
           text: 'Sell',
           action: () => this.$router.push(HOME),
           dark: false,
           accent: true,
         },
+        {
+          text: 'Login',
+          action: () => this.$router.push(LOGIN),
+          dark: true,
+          accent: false,
+        },
+        {
+          text: 'Register',
+          action: () => this.$router.push(REGISTER),
+          dark: true,
+          accent: false,
+        },
+      ],
+      authNav: [
         {
           text: '+ Add',
           action: () =>
@@ -49,16 +78,10 @@ export default {
           accent: true,
         },
         {
-          text: 'Login',
-          action: () => this.$router.push(LOGIN),
+          text: 'Sell',
+          action: () => this.$router.push(HOME),
           dark: false,
-          accent: false,
-        },
-        {
-          text: 'Favorites',
-          action: () => this.$router.push(FAVORITES),
-          dark: false,
-          accent: false,
+          accent: true,
         },
         {
           text: 'Logout',
@@ -67,7 +90,19 @@ export default {
           accent: false,
         },
       ],
+      authNavIcons: [
+        {
+          route: FAVORITES,
+          inactiveIconSrc: require('~/assets/icons/heart-white-icon.svg'),
+          activeIconSrc: require('~/assets/icons/heart-filled-icon.svg'),
+        },
+      ],
     }
+  },
+  computed: {
+    ...mapGetters({
+      isAuthenticated: 'auth-store/isAuthenticated',
+    }),
   },
 }
 </script>
@@ -81,7 +116,7 @@ export default {
   background-color: transparent;
 }
 
-.dark {
+.dark-header {
   background: linear-gradient(180deg, #090810 0%, #171236 100%);
 }
 

@@ -1,5 +1,10 @@
 <template>
-  <button class="button" @mousedown="onMousedown" @mouseup="onMouseup">
+  <button
+    class="button"
+    type="button"
+    @mousedown="onMousedown"
+    @mouseup="onMouseup"
+  >
     <img class="icon" :src="iconSrc" alt="Show pass" />
   </button>
 </template>

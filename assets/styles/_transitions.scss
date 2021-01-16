@@ -1,0 +1,9 @@
+.main-fade {
+  &-enter-active {
+    transition: opacity 0.3s ease-in-out;
+  }
+
+  &-enter {
+    opacity: 0;
+  }
+}
