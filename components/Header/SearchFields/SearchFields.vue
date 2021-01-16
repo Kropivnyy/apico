@@ -28,17 +28,12 @@
         />
       </template>
     </SearchInputContainer>
-    <button
-      class="search-btn"
-      :class="{ disabled: !product.length && !location.length }"
-      type="submit"
-    >
-      Search
-    </button>
+    <button class="search-btn" type="submit">Search</button>
   </form>
 </template>
 
 <script>
+import { mapGetters, mapMutations } from 'vuex'
 export default {
   name: 'SearchFields',
   data: () => ({
@@ -47,8 +42,28 @@ export default {
     searchIconSrc: require('~/assets/icons/search-icon.svg'),
     locationIconSrc: require('~/assets/icons/location-icon.svg'),
   }),
+  computed: {
+    ...mapGetters({
+      products: 'products-store/products',
+    }),
+  },
+  watch: {
+    product(value) {
+      if (!value && !this.location) this.onSearch()
+    },
+    location(value) {
+      if (!value && !this.product) this.onSearch()
+    },
+  },
   methods: {
-    onSearch() {},
+    ...mapMutations({
+      setSearchInput: 'products-store/setSearchInput',
+      setSearchingLocation: 'products-store/setSearchingLocation',
+    }),
+    onSearch() {
+      this.setSearchInput(this.product)
+      this.setSearchingLocation(this.location)
+    },
   },
 }
 </script>
@@ -80,10 +95,5 @@ export default {
   color: var(--white);
   font-size: 14px;
   transition: background-color var(--main-transition);
-}
-
-.search-btn.disabled {
-  background-color: var(--grey-600);
-  cursor: default;
 }
 </style>

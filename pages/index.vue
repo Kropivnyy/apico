@@ -10,8 +10,9 @@
 import { mapGetters } from 'vuex'
 
 export default {
-  async fetch({ store }) {
-    if (!store.getters['products-store/isProductsFetched']) {
+  middleware: ['fetch-user-middleware'],
+  async fetch({ store, dispatch }) {
+    if (!store.getters['products-store/productsFetched']) {
       try {
         await store.dispatch('products-store/fetchProducts')
       } catch (error) {}

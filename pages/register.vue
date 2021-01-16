@@ -103,7 +103,7 @@ import { HOME } from '~/utils/constants/routes'
 
 export default {
   layout: 'auth',
-  middleware: ['restricted-route-middleware'],
+  middleware: ['fetch-user-middleware', 'restricted-route-middleware'],
   mixins: [validationMixin],
   data: () => ({
     email: '',
@@ -172,6 +172,7 @@ export default {
           password: this.password,
         }
 
+        this.$store.commit('user-store/setUserFetched', false)
         await this.$store.dispatch('auth-store/registerUser', post)
         this.$router.push(HOME)
       } catch (error) {}

@@ -10,28 +10,15 @@
 import { mapGetters } from 'vuex'
 
 export default {
-  //   async asyncData({ store }) {
-  //     console.log('page')
-
-  //     if (!store.getters['products-store/isProductsFetched']) {
-  //       try {
-  //         await store.dispatch('products-store/fetchProducts')
-  //       } catch (error) {}
-  //     }
-  //   },
-  fetch({ store, redirect }) {
-    console.log('fetch favorites page')
-    // try {
-    //   await store.dispatch('user-store/fetchUser')
-    //   if (!Object.keys(store.getters['user-store/user']).length) {
-    //     redirect(HOME)
-    //   }
-    // } catch (error) {}
+  middleware: ['fetch-user-middleware', 'private-route-middleware'],
+  async fetch({ store, dispatch }) {
+    if (!store.getters['products-store/productsFetched']) {
+      try {
+        await store.dispatch('products-store/fetchProducts')
+      } catch (error) {}
+    }
   },
-
-  middleware: ['private-route-middleware'],
   data: () => ({
-    favoritesProducts: [],
     filterFunction: () => true,
   }),
   computed: {
@@ -41,22 +28,18 @@ export default {
       favorites: 'user-store/favorites',
       isVisibleAddProductModal: 'products-store/isVisibleAddProductModal',
     }),
+    favoriteProducts() {
+      return this.products.filter((product) =>
+        this.favorites.has(product.productId)
+      )
+    },
     filteredProducts() {
-      return this.favoritesProducts.filter(this.filterFunction)
+      return this.favoriteProducts.filter(this.filterFunction)
     },
   },
-  mounted() {},
   methods: {
     changeFilterFunction(filterFunction) {
       this.filterFunction = filterFunction
-    },
-    selectFavorites() {
-      if (this.isProductsFetched) {
-      }
-      this.favoritesProducts = this.products.filter((product) =>
-        this.favorites.has(product.productId)
-      )
-      this.favoritesSelected = true
     },
   },
 }

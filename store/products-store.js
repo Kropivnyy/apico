@@ -1,7 +1,9 @@
 export const state = () => ({
   isVisibleAddProductModal: false,
   products: [],
-  isProductsFetched: false,
+  productsFetched: false,
+  searchInput: '',
+  searchingLocation: '',
 })
 
 export const mutations = {
@@ -13,8 +15,16 @@ export const mutations = {
     state.products = products
   },
 
-  setIsProductsFetched(state, value) {
-    state.isProductsFetched = value
+  setProductsFetched(state, value) {
+    state.productsFetched = value
+  },
+
+  setSearchInput(state, value) {
+    state.searchInput = value
+  },
+
+  setSearchingLocation(state, value) {
+    state.searchingLocation = value
   },
 
   addProduct(state, product) {
@@ -62,7 +72,7 @@ export const actions = {
           productId: key,
         }))
       )
-      commit('setIsProductsFetched', true)
+      commit('setProductsFetched', true)
     } catch (error) {
       console.error(error)
       throw error
@@ -72,6 +82,18 @@ export const actions = {
 
 export const getters = {
   isVisibleAddProductModal: (state) => state.isVisibleAddProductModal,
-  products: (state) => state.products,
-  isProductsFetched: (state) => state.isProductsFetched,
+  searchInput: (state) => state.searchInput,
+  searchingLocation: (state) => state.searchingLocation,
+  products: (state, getters) => {
+    const normalizedSearchValue = getters.searchInput?.toLowerCase()
+    const searchingLocation = getters.searchingLocation
+    return state.products.filter(
+      (product) =>
+        (normalizedSearchValue
+          ? product?.title?.toLowerCase().includes(normalizedSearchValue)
+          : true) &&
+        (searchingLocation ? product?.location === searchingLocation : true)
+    )
+  },
+  productsFetched: (state) => state.productsFetched,
 }

@@ -12,18 +12,7 @@
 </template>
 
 <script>
-import { HOME } from '~/utils/constants/routes'
-export default {
-  async fetch({ store, redirect }) {
-    console.log('fetch auth layout')
-    try {
-      await store.dispatch('user-store/fetchUser')
-      if (Object.keys(store.getters['user-store/user']).length) {
-        redirect(HOME)
-      }
-    } catch (error) {}
-  },
-}
+export default {}
 </script>
 
 <style scoped>

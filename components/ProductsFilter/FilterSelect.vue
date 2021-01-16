@@ -4,7 +4,7 @@
     @click="isVisibleDropdown = !isVisibleDropdown"
   >
     <div ref="chosenCategory" class="chosen-category">
-      <img class="prepend-input-icon" :src="gridIconSrc" />
+      <img class="prepend-input-icon" :src="prependIconSrc" />
       <span>{{
         selectedCategory.value ? selectedCategory.text : 'Choose category'
       }}</span>
@@ -21,10 +21,10 @@
         exclude: ['chosenCategory'],
         handler: 'onClickOutsideDropdown',
       }"
-      class="categories-list"
+      class="options-list"
     >
       <li
-        v-for="category in categories"
+        v-for="category in options"
         :key="category.value"
         class="category-item"
         :class="{ active: category.value === selectedCategory.value }"
@@ -40,27 +40,30 @@
 export default {
   name: 'FilterSelect',
   props: {
-    categories: {
+    options: {
       type: Array,
       required: true,
     },
-    selectedCategory: {
+    selectedOption: {
       type: Object,
       required: true,
     },
-    changeCategory: {
+    changeOption: {
       type: Function,
       required: true,
     },
+    prependIconSrc: {
+      type: String,
+      default: '',
+    },
   },
   data: () => ({
-    gridIconSrc: require('~/assets/icons/grid-icon.svg'),
     chevronDownIconSrc: require('~/assets/icons/chevron-down-icon.svg'),
     isVisibleDropdown: false,
   }),
   methods: {
-    onClickCategory(category) {
-      this.changeCategory(category)
+    onClickOption(option) {
+      this.changeOption(option)
       this.isVisibleDropdown = false
     },
     onClickOutsideDropdown() {
@@ -79,7 +82,7 @@ export default {
   cursor: pointer;
 }
 
-.chosen-category {
+.chosen-option {
   display: flex;
   align-items: center;
   flex-grow: 1;
@@ -89,7 +92,7 @@ export default {
   flex-grow: 1;
 }
 
-.categories-list {
+.options-list {
   position: absolute;
   z-index: var(--filter-category-list-z-index);
   top: -1px;
@@ -100,7 +103,7 @@ export default {
   list-style: none;
 }
 
-.category-item {
+.option-item {
   min-height: 35px;
   display: flex;
   align-items: center;
@@ -110,21 +113,21 @@ export default {
   cursor: pointer;
 }
 
-.category-item.active {
+.option-item.active {
   background-color: var(--grey-900);
 }
 
-.category-item:first-child {
+.option-item:first-child {
   border-top-left-radius: inherit;
   border-top-right-radius: inherit;
 }
 
-.category-item:last-child {
+.option-item:last-child {
   border-bottom-left-radius: inherit;
   border-bottom-right-radius: inherit;
 }
 
-.category-item:hover {
+.option-item:hover {
   background-color: var(--grey-800);
 }
 

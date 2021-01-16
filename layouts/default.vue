@@ -14,15 +14,6 @@
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
-  fetch({ store, redirect }) {
-    console.log('fetch default layout')
-    // try {
-    //   await store.dispatch('user-store/fetchUser')
-    //   if (!Object.keys(store.getters['user-store/user']).length) {
-    //     redirect(HOME)
-    //   }
-    // } catch (error) {}
-  },
   computed: {
     ...mapGetters({
       user: 'user-store/user',

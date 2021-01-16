@@ -67,9 +67,10 @@ export const actions = {
       commit('setIsAuthenticated', false)
       commit('user-store/setUser', {}, { root: true })
     } catch (error) {
-      commit('setIsLoading', false)
+      console.error(error)
       throw error
     }
+    commit('setIsLoading', false)
   },
 }
 

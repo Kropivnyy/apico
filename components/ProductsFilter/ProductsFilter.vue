@@ -2,9 +2,10 @@
   <div class="products-filter">
     <FilterContainer class="filter-container select">
       <FilterSelect
-        :categories="categories"
-        :selected-category="selectedCategory"
-        :change-category="changeCategory"
+        :options="categories"
+        :selected-option="selectedCategory"
+        :change-option="changeCategory"
+        :prepend-icon-src="gridIconSrc"
       />
     </FilterContainer>
     <FilterContainer class="filter-container filter-price-from price">
@@ -38,6 +39,7 @@ export default {
       selectedCategory: categories[0],
       priceFrom: '',
       priceTo: '',
+      gridIconSrc: require('~/assets/icons/grid-icon.svg'),
     }
   },
   updated() {
