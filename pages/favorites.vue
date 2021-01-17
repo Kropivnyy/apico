@@ -3,6 +3,10 @@
     <h2 class="visually-hidden">Favorites list</h2>
     <ProductsFilter @changeFilterFunction="changeFilterFunction" />
     <ProductsGrid :products="filteredProducts" />
+    <EmptyGridFallback
+      v-if="!filteredProducts.length"
+      text="You can add favorite products from the homepage"
+    />
   </section>
 </template>
 
@@ -27,7 +31,6 @@ export default {
       products: 'products-store/products',
       isProductsFetched: 'products-store/isProductsFetched',
       favorites: 'user-store/favorites',
-      isVisibleAddProductModal: 'products-store/isVisibleAddProductModal',
     }),
     favoriteProducts() {
       return this.products.filter((product) =>

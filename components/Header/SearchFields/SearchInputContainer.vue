@@ -17,12 +17,17 @@ export default {
   position: relative;
   display: flex;
   align-items: center;
-  min-height: 50px;
-  margin-right: 7px;
+  min-height: 36px;
   padding: 0 12px;
   background-color: var(--white);
   border-radius: 4px;
   font-size: 15px;
   line-height: 31px;
+}
+
+@media screen and (min-width: 768px) {
+  .search-input-container {
+    min-height: 50px;
+  }
 }
 </style>

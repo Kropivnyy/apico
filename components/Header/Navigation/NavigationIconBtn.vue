@@ -5,6 +5,7 @@
 </template>
 
 <script>
+import { HOME } from '~/utils/constants/routes'
 export default {
   name: 'NavigationIconBtn',
   props: {
@@ -24,14 +25,19 @@ export default {
   },
   computed: {
     iconSrc() {
-      return this.$route.path === this.route
+      return this.isActiveRoute
         ? this.activeIconSrc || this.inactiveIconSrc
         : this.inactiveIconSrc
+    },
+    isActiveRoute() {
+      return this.$route.path === this.route
     },
   },
   methods: {
     onClick() {
-      this.$router.push(this.route)
+      this.isActiveRoute
+        ? this.$router.push(HOME)
+        : this.$router.push(this.route)
     },
   },
 }

@@ -5,9 +5,11 @@
   >
     <div :ref="`chosenOption-${excludeRefId}`" class="chosen-option">
       <img class="prepend-input-icon" :src="prependIconSrc" />
-      <span class="text-overflow-ellipsis">{{
-        selectedOption.value ? selectedOption.text : defaultText
-      }}</span>
+      <span
+        class="text-overflow-ellipsis"
+        :class="{ 'default-value': !selectedOption.value }"
+        >{{ selectedOption.value ? selectedOption.text : defaultText }}</span
+      >
       <div class="spacer"></div>
       <img
         class="append-input-icon"
@@ -151,5 +153,9 @@ export default {
 
 .append-input-icon.rotate {
   transform: rotate(180deg);
+}
+
+.default-value {
+  color: var(--grey-half-opacity);
 }
 </style>

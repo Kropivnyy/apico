@@ -30,11 +30,11 @@ export default {
 
 <style scoped>
 .subcard {
-  min-height: 76px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 14px;
+  line-height: 28px;
 }
 
 .link {

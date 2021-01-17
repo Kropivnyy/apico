@@ -2,83 +2,53 @@
   <portal selector="#modal-root">
     <div class="overlay">
       <Header />
-      <div class="content">
-        <div class="form-card">
-          <form class="form" @submit.prevent="onSubmit">
-            <h2 class="title">Add product</h2>
-            <div class="input-group text-group">
-              <label>
-                <span class="input-label" :class="{ invalid: isInvalidPrice }"
-                  >Title<span class="required-star">*</span></span
-                >
-                <div
-                  class="input-text-field"
-                  :class="{ invalid: isInvalidTitle }"
-                >
-                  <input
-                    v-model.trim="title"
-                    class="input"
-                    type="text"
-                    placeholder="For example: Iron man suit"
-                    autocomplete="off"
-                    autofocus
-                  />
-                </div>
-                <small
-                  class="input-error-text"
-                  :class="{ visible: isInvalidTitle }"
-                  >Enter actual name of product</small
-                >
-              </label>
-            </div>
-            <div class="input-group text-group">
-              <label>
-                <span class="input-label" :class="{ invalid: isInvalidPrice }"
-                  >Location<span class="required-star">*</span></span
-                >
-                <div
-                  class="input-text-field"
-                  :class="{ invalid: isInvalidLocation }"
-                >
-                  <input
-                    v-model.trim="location"
-                    class="input"
-                    type="text"
-                    placeholder="For example: Los Angeles, CA"
-                    autocomplete="off"
-                  />
-                </div>
-                <small
-                  class="input-error-text"
-                  :class="{ visible: isInvalidLocation }"
-                  >Location must have at least
-                  {{ $v.location.$params.minLength.min }} characters. Now it's
-                  {{ location.length }}</small
-                >
-              </label>
-            </div>
-            <div class="input-group textarea-group">
-              <label>
-                <span class="input-label">Description</span>
-                <div class="input-text-field">
-                  <textarea
-                    v-model.trim="description"
-                    class="input textarea"
-                    rows="8"
-                    placeholder="For example: Iron man suit"
-                    autocomplete="off"
-                  />
-                </div>
-              </label>
-            </div>
-            <div class="input-group photo-group">
-              <span class="input-label">Photo</span>
-              <div
-                class="input-text-field photo-container"
-                @click="() => $refs.fileInput.click()"
-              >
-                <UploadingFile :file="selectedFile" :on-remove="onRemoveFile" />
-              </div>
+      <FormCard class="form-card">
+        <form class="form" @submit.prevent="onSubmit">
+          <FormCardTitle title="Add product" />
+          <InputWrapper
+            label="Title"
+            is-required-field
+            :error-text="`Title must have at least ${$v.title.$params.minLength.min} characters. Now it's ${title.length}`"
+            :is-invalid-value="isInvalidTitle"
+          >
+            <input
+              v-model.trim="title"
+              class="input"
+              type="text"
+              placeholder="For example: Iron man suit"
+              autocomplete="off"
+              autofocus
+            />
+          </InputWrapper>
+          <InputWrapper
+            label="Location"
+            is-required-field
+            :error-text="`Location must have at least ${$v.location.$params.minLength.min} characters. Now it's ${location.length}`"
+            :is-invalid-value="isInvalidLocation"
+          >
+            <input
+              v-model.trim="location"
+              class="input"
+              type="text"
+              placeholder="For example: Los Angeles, CA"
+              autocomplete="off"
+            />
+          </InputWrapper>
+          <InputWrapper label="Description">
+            <textarea
+              v-model.trim="description"
+              class="input textarea"
+              rows="9"
+              placeholder="For example: Iron man suit"
+              autocomplete="off"
+            />
+          </InputWrapper>
+          <InputWrapper
+            label="Photo"
+            :click-handler="() => $refs.fileInput.click()"
+          >
+            <div class="photo-container">
+              <UploadingFile :file="selectedFile" :on-remove="onRemoveFile" />
               <input
                 ref="fileInput"
                 class="file-input"
@@ -87,43 +57,33 @@
                 @change="onSelectFiles"
               />
             </div>
-            <div class="input-group text-group">
-              <label>
-                <span class="input-label" :class="{ invalid: isInvalidPrice }"
-                  >Price<span class="required-star">*</span></span
-                >
-                <div
-                  class="input-text-field"
-                  :class="{ invalid: isInvalidPrice }"
-                >
-                  <input
-                    v-model.trim="price"
-                    class="input number-input"
-                    type="number"
-                    min="1"
-                    autocomplete="off"
-                  />
-                </div>
-                <small
-                  class="input-error-text"
-                  :class="{ visible: isInvalidPrice }"
-                  >Price must be a number</small
-                >
-              </label>
-            </div>
-            <button
-              class="submit-btn"
-              :class="{ disabled: $v.$invalid }"
-              type="submit"
-            >
-              {{ submitLoading ? 'Loading...' : 'Submit' }}
-            </button>
-          </form>
-          <button class="close-btn" @click="toggleModal">
-            <span class="close-btn-content">+</span>
-          </button>
-        </div>
-      </div>
+          </InputWrapper>
+          <InputWrapper
+            label="Price"
+            is-required-field
+            error-text="Price must be a number"
+            :is-invalid-value="isInvalidPrice"
+          >
+            <input
+              v-model.trim="price"
+              class="input number-input"
+              type="number"
+              min="1"
+              placeholder="$"
+              autocomplete="off"
+            />
+          </InputWrapper>
+          <SubmitBtn
+            class="submit-btn"
+            submit-text="Submit"
+            :disabled="$v.$invalid"
+            :is-submit-loading="submitLoading"
+          />
+        </form>
+        <button class="close-btn" @click="toggleModal">
+          <span class="close-btn-content">+</span>
+        </button>
+      </FormCard>
     </div>
   </portal>
 </template>
@@ -178,6 +138,7 @@ export default {
   destroyed() {
     window.removeEventListener('keydown', this.keyDownHandler)
   },
+
   methods: {
     ...mapActions({
       addProduct: 'products-store/addProduct',
@@ -236,28 +197,26 @@ export default {
 
 <style scoped>
 .overlay {
-  position: absolute;
+  position: fixed;
   top: 0;
+  right: 0;
+  bottom: 0;
   left: 0;
-  width: 100%;
-  min-height: 100vh;
-  padding-top: var(--header-height);
+  padding-top: calc(var(--header-height) + 16px);
+  padding-right: 16px;
+  padding-bottom: 16px;
+  padding-left: 16px;
   display: flex;
   justify-content: center;
   align-items: flex-start;
   background-color: var(--star-white);
-  z-index: 200;
-}
-
-.content {
-  width: 100%;
-  max-width: 1136px;
-  margin: 0 auto;
-  padding: 34px;
+  overflow-y: auto;
+  z-index: var(--modal-z-index);
 }
 
 .form-card {
   position: relative;
+  max-width: 1136px;
   padding: 20px;
 }
 
@@ -270,6 +229,18 @@ export default {
   display: none;
 }
 
+.textarea {
+  resize: none;
+}
+
+.photo-container {
+  width: calc(100% + 24px);
+  margin-left: -12px;
+  margin-right: -12px;
+  padding: 16px;
+  cursor: pointer;
+}
+
 .submit-btn {
   margin: 0 auto;
   max-width: 377px;
@@ -277,8 +248,8 @@ export default {
 
 .close-btn {
   position: absolute;
-  top: 34px;
-  right: 34px;
+  top: 16px;
+  right: 16px;
   height: 30px;
   width: 30px;
   border-radius: 50%;
@@ -294,8 +265,20 @@ export default {
 }
 
 @media screen and (min-width: 768px) {
+  .overlay {
+    padding-top: calc(var(--header-height) + 34px);
+    padding-right: 34px;
+    padding-bottom: 34px;
+    padding-left: 34px;
+  }
+
   .form-card {
     padding: 36px;
+  }
+
+  .close-btn {
+    top: 34px;
+    right: 34px;
   }
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <form class="container form" @submit.prevent="onSearch">
+  <form class="form" @submit.prevent="onSearch">
     <SearchInputContainer class="product-search-container">
       <template v-slot:icon>
         <SearchInputIcon :src="searchIconSrc" />
@@ -81,16 +81,19 @@ export default {
 <style scoped>
 .form {
   display: flex;
-  align-items: stretch;
-  min-height: 50px;
+  align-items: center;
+  flex-wrap: wrap;
+  padding-bottom: 8px;
 }
 
 .product-search-container {
-  flex: 1 1 467px;
+  flex: 1 1 100%;
+  margin-bottom: 8px;
 }
 
 .location-search-container {
-  flex: 1 1 198px;
+  flex: 1 1 calc(60% - 8px);
+  margin-right: 8px;
 }
 
 .input {
@@ -98,12 +101,38 @@ export default {
 }
 
 .search-btn {
-  flex: 1 1 176px;
+  min-height: 36px;
+  flex: 1 1 40%;
   padding: 0 16px;
   border-radius: 4px;
   background-color: var(--indigo);
   color: var(--white);
   font-size: 14px;
   transition: background-color var(--main-transition);
+}
+
+@media screen and (min-width: 768px) {
+  .form {
+    flex-wrap: nowrap;
+    padding-bottom: 0;
+  }
+
+  .product-search-container {
+    flex: 1 1 465px;
+    max-width: 465px;
+    margin-right: 8px;
+    margin-bottom: 0;
+  }
+
+  .location-search-container {
+    flex: 1 1 198px;
+    max-width: 198px;
+  }
+
+  .search-btn {
+    min-height: 50px;
+    flex: 1 1 176px;
+    max-width: 176px;
+  }
 }
 </style>

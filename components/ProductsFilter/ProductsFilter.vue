@@ -12,7 +12,7 @@
     <FilterContainer class="filter-container filter-price-from price">
       <input
         v-model.trim="priceFrom"
-        class="input"
+        class="number-input"
         type="number"
         placeholder="Price from (USD)"
         autocomplete="off"
@@ -21,7 +21,7 @@
     <FilterContainer class="filter-container price">
       <input
         v-model.trim="priceTo"
-        class="input"
+        class="number-input"
         type="number"
         placeholder="Price to (USD)"
         autocomplete="off"
@@ -62,12 +62,11 @@ export default {
 
 <style scoped>
 .products-filter {
-  min-height: 59px;
   margin-bottom: 15px;
-  padding-right: 11px;
-  padding-left: 11px;
+  padding: 12px;
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   background-color: var(--white);
   box-shadow: var(--products-filter-box-shadow);
   border-radius: 4px;
@@ -75,27 +74,19 @@ export default {
   font-size: 14px;
 }
 
-.filter-container:not(:last-child) {
-  margin-right: 24px;
-}
-
 .select {
-  flex: 0 1 285px;
+  flex: 1 1 100%;
+  width: 100%;
+  margin-bottom: 12px;
 }
 
 .price {
-  flex: 0 1 143px;
-  max-width: 143px;
+  flex: 1 1 50%;
+  max-width: calc(50% - 12px);
 }
 
-.input {
-  -moz-appearance: textfield;
-}
-
-.input::-webkit-outer-spin-button,
-.input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+.filter-price-from {
+  margin-right: 24px;
 }
 
 .filter-price-from::after {
@@ -105,5 +96,25 @@ export default {
   background-color: var(--grey-800);
   position: absolute;
   right: -19px;
+}
+
+.number-input {
+  width: 100%;
+}
+
+@media screen and (min-width: 768px) {
+  .filter-container:not(:last-child) {
+    margin-right: 24px;
+  }
+
+  .select {
+    flex: 0 1 285px;
+    margin-bottom: 0;
+  }
+
+  .price {
+    flex: 0 1 143px;
+    max-width: 143px;
+  }
 }
 </style>

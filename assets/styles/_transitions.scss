@@ -1,6 +1,6 @@
 .main-fade {
   &-enter-active {
-    transition: opacity 0.3s ease-in-out;
+    transition: opacity var(--route-transition);
   }
 
   &-enter {

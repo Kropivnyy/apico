@@ -1,39 +1,54 @@
 <template>
   <header class="header" :class="{ 'dark-header': !isAuthLayout }">
     <div class="header-inner" :class="{ 'visible-search': isVisibleSearch }">
-      <Logo :dark="isAuthLayout" />
-      <nav v-if="isAuthenticated" class="navigation">
-        <NavigationTextBtn
-          v-for="btn in authNav"
-          :key="btn.text"
-          v-bind="btn"
-        />
-        <NavigationIconBtn
-          v-for="btn in authNavIcons"
-          :key="btn.inactiveIconSrc"
-          v-bind="btn"
-        />
-        <UserMenu />
-      </nav>
-      <nav v-if="!isAuthenticated" class="navigation">
-        <NavigationTextBtn
-          v-for="btn in unauthNav"
-          :key="btn.text"
-          v-bind="btn"
-          :is-auth-layout="isAuthLayout"
-        />
-      </nav>
-      <SearchFields v-if="isVisibleSearch" />
+      <div class="header-content">
+        <Logo :dark="isAuthLayout" />
+        <nav v-if="isAuthenticated" class="navigation">
+          <NavigationTextBtn
+            v-for="btn in authNav"
+            :key="btn.text"
+            class="navigation-btn"
+            :text="btn.text"
+            :action="btn.action"
+            :accent="btn.accent"
+            :dark="btn.dark"
+          />
+          <NavigationIconBtn
+            v-for="btn in authNavIcons"
+            :key="btn.text"
+            class="navigation-btn"
+            :route="btn.route"
+            :inactive-icon-src="btn.inactiveIconSrc"
+            :active-icon-src="btn.activeIconSrc"
+          />
+          <UserMenu class="navigation-btn" />
+        </nav>
+        <nav v-if="!isAuthenticated" class="navigation">
+          <NavigationTextBtn
+            v-for="btn in unauthNav"
+            :key="btn.text"
+            class="navigation-btn"
+            :text="btn.text"
+            :action="btn.action"
+            :accent="btn.accent"
+            :dark="btn.dark"
+            :is-auth-layout="isAuthLayout"
+          />
+        </nav>
+        <MenuBtn :dark="isAuthLayout" />
+      </div>
+      <SearchFields v-if="isVisibleSearch" class="search-fields" />
     </div>
   </header>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import { FAVORITES, HOME, LOGIN, REGISTER } from '~/utils/constants/routes'
+import navigationMixin from '~/mixins/navigation-mixin'
 
 export default {
   name: 'Header',
+  mixins: [navigationMixin],
   props: {
     isAuthLayout: {
       type: Boolean,
@@ -49,54 +64,6 @@ export default {
   data() {
     return {
       isVisibleModal: false,
-      unauthNav: [
-        {
-          text: 'Sell',
-          action: () => this.$router.push(HOME),
-          dark: false,
-          accent: true,
-        },
-        {
-          text: 'Login',
-          action: () => this.$router.push(LOGIN),
-          dark: true,
-          accent: false,
-        },
-        {
-          text: 'Register',
-          action: () => this.$router.push(REGISTER),
-          dark: true,
-          accent: false,
-        },
-      ],
-      authNav: [
-        {
-          text: '+ Add',
-          action: () =>
-            this.$store.commit('products-store/toggleAddProductModal'),
-          dark: false,
-          accent: true,
-        },
-        {
-          text: 'Sell',
-          action: () => this.$router.push(HOME),
-          dark: false,
-          accent: true,
-        },
-        {
-          text: 'Logout',
-          action: () => this.$store.dispatch('auth-store/logout'),
-          dark: false,
-          accent: false,
-        },
-      ],
-      authNavIcons: [
-        {
-          route: FAVORITES,
-          inactiveIconSrc: require('~/assets/icons/heart-white-icon.svg'),
-          activeIconSrc: require('~/assets/icons/heart-filled-icon.svg'),
-        },
-      ],
     }
   },
   computed: {
@@ -121,23 +88,48 @@ export default {
 }
 
 .header-inner {
-  min-height: var(--header-height);
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
   width: 100%;
-  max-width: 1200px;
+  max-width: 1280px;
   margin: 0 auto;
-  padding: 0 8px;
+  padding: 0 16px;
+}
+
+.header-content {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  flex-wrap: wrap;
+  flex: 1 1 100%;
+  min-height: var(--header-height);
 }
 
-.visible-search {
-  min-height: var(--header-extra-height);
+.search-fields {
+  max-width: 855px;
+  margin: 0 auto;
+  flex: 1 1 100%;
+  min-height: calc(var(--header-extra-height) - var(--header-height));
 }
 
 .navigation {
-  display: flex;
-  align-items: center;
+  display: none;
+}
+
+@media screen and (min-width: 768px) {
+  .navigation {
+    display: flex;
+    align-items: center;
+  }
+
+  .navigation-btn:not(:last-child) {
+    margin-right: 16px;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .header-inner {
+    padding: 0 48px;
+  }
 }
 </style>

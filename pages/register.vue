@@ -1,12 +1,13 @@
 <template>
-  <form @submit.prevent="onSubmit">
-    <h2 class="title">Register</h2>
-    <div class="input-group text-group">
-      <label>
-        <span class="input-label" :class="{ invalid: isInvalidEmail }"
-          >Email</span
+  <div>
+    <FormCard class="form-card">
+      <form @submit.prevent="onSubmit">
+        <FormCardTitle title="Register" />
+        <InputWrapper
+          label="Email"
+          error-text="Enter your actual email"
+          :is-invalid-value="isInvalidEmail"
         >
-        <div class="input-text-field" :class="{ invalid: isInvalidEmail }">
           <input
             v-model.trim="email"
             class="input"
@@ -15,18 +16,12 @@
             autocomplete="off"
             autofocus
           />
-        </div>
-        <small class="input-error-text" :class="{ visible: isInvalidEmail }"
-          >Enter your actual email</small
+        </InputWrapper>
+        <InputWrapper
+          label="Full name"
+          error-text="Enter your actual full name"
+          :is-invalid-value="isInvalidFullName"
         >
-      </label>
-    </div>
-    <div class="input-group text-group">
-      <label>
-        <span class="input-label" :class="{ invalid: isInvalidFullName }"
-          >Full name</span
-        >
-        <div class="input-text-field" :class="{ invalid: isInvalidFullName }">
           <input
             v-model.trim="fullName"
             class="input"
@@ -34,18 +29,12 @@
             placeholder="Tony Stark"
             autocomplete="off"
           />
-        </div>
-        <small class="input-error-text" :class="{ visible: isInvalidFullName }"
-          >Enter your actual full name</small
+        </InputWrapper>
+        <InputWrapper
+          label="Password"
+          :error-text="`Password must have at least ${$v.password.$params.minLength.min} characters. Now it's ${password.length}`"
+          :is-invalid-value="isInvalidPassword"
         >
-      </label>
-    </div>
-    <div class="input-group text-group">
-      <label>
-        <span class="input-label" :class="{ invalid: isInvalidPassword }"
-          >Password</span
-        >
-        <div class="input-text-field" :class="{ invalid: isInvalidPassword }">
           <input
             v-model.trim="password"
             class="input"
@@ -55,22 +44,11 @@
             :on-mousedown="() => showPasswordInput({ showPass })"
             :on-mouseup="() => hidePasswordInput({ showPass })"
           />
-        </div>
-        <small class="input-error-text" :class="{ visible: isInvalidPassword }"
-          >Password must have at least
-          {{ $v.password.$params.minLength.min }} characters. Now it's
-          {{ password.length }}</small
-        >
-      </label>
-    </div>
-    <div class="input-group text-group">
-      <label>
-        <span class="input-label" :class="{ invalid: isInvalidPasswordConfirm }"
-          >Password again</span
-        >
-        <div
-          class="input-text-field"
-          :class="{ invalid: isInvalidPasswordConfirm }"
+        </InputWrapper>
+        <InputWrapper
+          label="Password again"
+          error-text="Password mismatch"
+          :is-invalid-value="isInvalidPasswordConfirm"
         >
           <input
             v-model.trim="passwordConfirm"
@@ -81,18 +59,18 @@
             :on-mousedown="() => showPasswordInput({ showPassConfirm })"
             :on-mouseup="() => hidePasswordInput({ showPassConfirm })"
           />
-        </div>
-        <small
-          class="input-error-text"
-          :class="{ visible: isInvalidPasswordConfirm }"
-          >Password mismatch</small
-        >
-      </label>
-    </div>
-    <button class="submit-btn" :class="{ disabled: $v.$invalid }" type="submit">
-      {{ isLoading ? 'Loading...' : 'Register' }}
-    </button>
-  </form>
+        </InputWrapper>
+        <SubmitBtn
+          submit-text="Register"
+          :disabled="$v.$invalid"
+          :is-submit-loading="isLoading"
+        />
+      </form>
+    </FormCard>
+    <FormCard class="form-card">
+      <AuthSubcard />
+    </FormCard>
+  </div>
 </template>
 
 <script>
@@ -181,3 +159,20 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+.form-card {
+  max-width: 425px;
+  padding: 12px;
+}
+
+.form-card:not(:last-child) {
+  margin-bottom: 24px;
+}
+
+@media screen and (min-width: 768px) {
+  .form-card {
+    padding: 24px;
+  }
+}
+</style>

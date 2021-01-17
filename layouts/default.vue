@@ -1,5 +1,6 @@
 <template>
   <div class="app">
+    <Sidebar />
     <Header is-visible-search />
     <main class="main-content">
       <Nuxt />
@@ -20,7 +21,15 @@ export default {
       isVisibleAddProductModal: 'products-store/isVisibleAddProductModal',
     }),
   },
-
+  watch: {
+    isVisibleAddProductModal(value) {
+      if (value) {
+        document.body.classList.add('body-disable-scroll')
+      } else {
+        document.body.classList.remove('body-disable-scroll')
+      }
+    },
+  },
   async mounted() {
     if (!Object.keys(this.user).length) {
       try {

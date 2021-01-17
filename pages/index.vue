@@ -3,6 +3,10 @@
     <h2 class="visually-hidden">Products list</h2>
     <ProductsFilter @changeFilterFunction="changeFilterFunction" />
     <ProductsGrid :products="filteredProducts" />
+    <EmptyGridFallback
+      v-if="!filteredProducts.length"
+      text="There are no products yet"
+    />
   </section>
 </template>
 
@@ -25,7 +29,6 @@ export default {
   computed: {
     ...mapGetters({
       products: 'products-store/products',
-      isVisibleAddProductModal: 'products-store/isVisibleAddProductModal',
     }),
     filteredProducts() {
       return this.products.filter(this.filterFunction)
